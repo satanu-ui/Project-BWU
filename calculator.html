@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Calculator</title>
+    <script src="JavaScript/calculator.js" defer></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .calculator-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        .calculator-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .calculator-header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .calculator-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .display-container {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .calculation-display {
+            font-size: 1.2rem;
+            color: #6c757d;
+            min-height: 24px;
+            text-align: right;
+            margin-bottom: 5px;
+            word-wrap: break-word;
+        }
+
+        .result-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #212529;
+            text-align: right;
+            min-height: 50px;
+            word-wrap: break-word;
+        }
+
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            color: #495057;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-number {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .btn-number:hover {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+        }
+
+        .btn-operator {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-operator:hover {
+            background: linear-gradient(135deg, #3a8fd9 0%, #00c9e6 100%);
+        }
+
+        .btn-equals {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .btn-equals:hover {
+            background: linear-gradient(135deg, #ee5a52 0%, #d63031 100%);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #fd7e14 0%, #f57900 100%);
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background: linear-gradient(135deg, #f57900 0%, #e6550d 100%);
+        }
+
+        .btn-decimal {
+            background: linear-gradient(135deg, #20c997 0%, #12b886 100%);
+            color: white;
+        }
+
+        .btn-decimal:hover {
+            background: linear-gradient(135deg, #12b886 0%, #0ca678 100%);
+        }
+
+        .history-section {
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 2px solid #e9ecef;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .clear-history {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .clear-history:hover {
+            background: #5a6268;
+        }
+
+        .history-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .error-message {
+            color: #dc3545;
+            text-align: center;
+            padding: 10px;
+            font-weight: 500;
+            background: #f8d7da;
+            border-radius: 5px;
+            margin: 10px 20px;
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 15px;
+                font-size: 1.1rem;
+            }
+            
+            .result-display {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="calculator-header">
+            <h1>Advanced Calculator</h1>
+            <p>Perform calculations with history tracking</p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="display-container">
+            <div class="calculation-display" id="calculationDisplay"></div>
+            <div class="result-display" id="resultDisplay">0</div>
+        </div>
+
+        <div class="buttons-grid">
+            <button class="btn btn-clear" onclick="clearAll()">C</button>
+            <button class="btn btn-operator" onclick="appendOperator('÷')">÷</button>
+            <button class="btn btn-operator" onclick="appendOperator('×')">×</button>
+            <button class="btn btn-operator" onclick="appendOperator('-')">-</button>
+            
+            <button class="btn btn-number" onclick="appendNumber('7')">7</button>
+            <button class="btn btn-number" onclick="appendNumber('8')">8</button>
+            <button class="btn btn-number" onclick="appendNumber('9')">9</button>
+            <button class="btn btn-operator" onclick="appendOperator('+')">+</button>
+            
+            <button class="btn btn-number" onclick="appendNumber('4')">4</button>
+            <button class="btn btn-number" onclick="appendNumber('5')">5</button>
+            <button class="btn btn-number" onclick="appendNumber('6')">6</button>
+            <button class="btn btn-number" onclick="appendNumber('0')">0</button>
+            
+            <button class="btn btn-number" onclick="appendNumber('1')">1</button>
+            <button class="btn btn-number" onclick="appendNumber('2')">2</button>
+            <button class="btn btn-number" onclick="appendNumber('3')">3</button>
+            <button class="btn btn-decimal" onclick="appendDecimal()">.</button>
+            
+            <button class="btn btn-equals" onclick="calculate()">=</button>
+        </div>
+
+        <div class="history-section">
+            <div class="history-title">
+                <span>Calculation History</span>
+                <button class="clear-history" onclick="clearHistory()">Clear</button>
+            </div>
+            <div id="historyList"></div>
+        </div>
+    </div>
+</body>
+</html>
+
