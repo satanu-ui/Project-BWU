@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registration Form with Validation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .container {
+      max-width: 400px;
+      background: white;
+      padding: 20px;
+      margin: 0 auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .error {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+    .success {
+      color: green;
+      font-size: 1em;
+      text-align: center;
+      margin-top: 15px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      border: none;
+      color: white;
+      font-size: 1em;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Register</h2>
+    <form id="registrationForm" novalidate>
+      <label for="username">Username *</label>
+      <input type="text" id="username" name="username" />
+      <div id="usernameError" class="error"></div>
+
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" />
+      <div id="emailError" class="error"></div>
+
+      <label for="password">Password *</label>
+      <input type="password" id="password" name="password" />
+      <div id="passwordError" class="error"></div>
+
+      <label for="confirmPassword">Confirm Password *</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" />
+      <div id="confirmPasswordError" class="error"></div>
+
+      <button type="submit">Register</button>
+      <div id="formSuccess" class="success"></div>
+    </form>
+  </div>
+
+  <script>
+    // Function to get element by id
+    function get(id) {
+      return document.getElementById(id);
+    }
+
+    // Function to validate email format using simple regex
+    function isValidEmail(email) {
+      var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailPattern.test(email);
+    }
+
+    // Function to clear all error messages
+    function clearErrors() {
+      get('usernameError').textContent = '';
+      get('emailError').textContent = '';
+      get('passwordError').textContent = '';
+      get('confirmPasswordError').textContent = '';
+      get('formSuccess').textContent = '';
+    }
+
+    // Main validation function
+    function validateForm(event) {
+      event.preventDefault(); // Prevent form submission
+
+      clearErrors();
+
+      var username = get('username').value.trim();
+      var email = get('email').value.trim();
+      var password = get('password').value;
+      var confirmPassword = get('confirmPassword').value;
+
+      var isValid = true;
+
+      // Validate username: required and min length 3
+      if (username === '') {
+        get('usernameError').textContent = 'Username is required.';
+        isValid = false;
+      } else if (username.length < 3) {
+        get('usernameError').textContent = 'Username must be at least 3 characters.';
+        isValid = false;
+      }
+
+      // Validate email: required and valid format
+      if (email === '') {
+        get('emailError').textContent = 'Email is required.';
+        isValid = false;
+      } else if (!isValidEmail(email)) {
+        get('emailError').textContent = 'Please enter a valid email address.';
+        isValid = false;
+      }
+
+      // Validate password: required and min length 6
+      if (password === '') {
+        get('passwordError').textContent = 'Password is required.';
+        isValid = false;
+      } else if (password.length < 6) {
+        get('passwordError').textContent = 'Password must be at least 6 characters.';
+        isValid = false;
+      }
+
+      // Validate confirm password: required and must match password
+      if (confirmPassword === '') {
+        get('confirmPasswordError').textContent = 'Please confirm your password.';
+        isValid = false;
+      } else if (password !== confirmPassword) {
+        get('confirmPasswordError').textContent = 'Passwords do not match.';
+        isValid = false;
+      }
+
+      // If all validations pass
+      if (isValid) {
+        get('formSuccess').textContent = 'Registration successful!';
+        // Optionally, reset the form
+        get('registrationForm').reset();
+      }
+    }
+
+    // Attach event listener to form submit
+    get('registrationForm').addEventListener('submit', validateForm);
+  </script>
+</body>
+</html>
