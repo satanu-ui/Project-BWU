@@ -1,2 +1,2 @@
 # Project-BWU
-create javascript program with HTML and css
+create javascript program with HTML and css(ss)
